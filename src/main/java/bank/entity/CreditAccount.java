@@ -1,47 +1,66 @@
 package bank.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
+import bank.entity.parentClasses.BankAccount;
 
-public class CreditAccount extends PaymentAccount {
-    private Integer idCreditAcc;
-    private Date startDate;
-    private Date endDate;
+public class CreditAccount extends BankAccount {
+    private LocalDate startDate;
+    private LocalDate endDate;
     private Integer countMonth;
-    private Double amountCreditAcc;
-    private Integer employeeId;
+    private Double amount;
+    private Double monthlyAmount;
+    private Double interestRate;
+    private Employee employee;
+    private PaymentAccount paymentAccount;
 
-    public CreditAccount(PaymentAccount oldPayAcc, Integer idCreditAcc, Date startDate, Date endDate, Integer countMonth,
-                         Double amountCreditAcc, Integer employeeId) {
-        super(oldPayAcc);
-        this.setIdCreditAcc(idCreditAcc);
-        this.setStartDate(startDate);
-        this.setEndDate(endDate);
-        this.setCountMonth(countMonth);
-        this.setAmountCreditAcc(amountCreditAcc);
-        this.setEmployeeId(employeeId);
+    public CreditAccount(Integer id, User user, Bank bank, Employee employee, PaymentAccount paymentAccount,
+                         LocalDate startDate, Integer countMonth, Double amount) {
+        super(id, user, bank);
+        this.startDate = startDate;
+        this.countMonth = countMonth;
+        this.endDate = startDate.plusMonths(this.countMonth);
+        this.amount = amount;
+        this.interestRate = bank.getInterestRate();
+        this.monthlyAmount = (1 + getInterestRate() / 100) * amount / countMonth;
+        this.employee = employee;
+        this.paymentAccount = paymentAccount;
     }
 
-    public Integer getIdCreditAcc() {
-        return idCreditAcc;
+    public CreditAccount() {
+        super();
+        this.startDate = LocalDate.of(1, 1, 1);
+        this.countMonth = 1;
+        this.endDate = startDate.plusMonths(this.countMonth);
+        this.amount = -1.0;
+        this.interestRate = 1.0;
+        this.monthlyAmount = (1 + getInterestRate() / 100) * amount / countMonth;
+        this.employee = new Employee();
+        this.paymentAccount = new PaymentAccount();
     }
 
-    public void setIdCreditAcc(Integer idCreditAcc) {
-        this.idCreditAcc = idCreditAcc;
+    @Override
+    public String toString() {
+        return "Имя банка: " + super.getBank().getName() + "\nИмя пользователя: " + super.getUser().getName() +
+                "\nКоличество месяцев: " + countMonth + "\nДата взятия кредита: " + startDate.toString() +
+                "\nПредполагаемая дата погашения кредита:" + endDate.toString() + "\nСумма кредита: " +
+                amount + "\nПроцентная ставка: " + interestRate + "%" + "\nЕжемесячный платёж: " +
+                countMonth + "\nСотрудник, который выдал кредит: " + employee.getName() +
+                "\nId платёжного счёта: " + paymentAccount.getId().toString();
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -53,19 +72,43 @@ public class CreditAccount extends PaymentAccount {
         this.countMonth = countMonth;
     }
 
-    public Double getAmountCreditAcc() {
-        return amountCreditAcc;
+    public Double getAmount() {
+        return amount;
     }
 
-    public void setAmountCreditAcc(Double amountCreditAcc) {
-        this.amountCreditAcc = amountCreditAcc;
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
-    public Integer getEmployeeId() {
-        return employeeId;
+    public Double getMonthlyAmount() {
+        return monthlyAmount;
     }
 
-    public void setEmployeeId(Integer employeeId) {
-        this.employeeId = employeeId;
+    public void setMonthlyAmount(Double monthlyAmount) {
+        this.monthlyAmount = monthlyAmount;
+    }
+
+    public Double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(Double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public PaymentAccount getPaymentAccount() {
+        return paymentAccount;
+    }
+
+    public void setPaymentAccount(PaymentAccount paymentAccount) {
+        this.paymentAccount = paymentAccount;
     }
 }

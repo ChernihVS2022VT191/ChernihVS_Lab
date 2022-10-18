@@ -1,63 +1,68 @@
 package bank.entity;
 
-import bank.entity.helpClass.FullName;
-
 import java.util.Date;
+import bank.entity.helpClass.FullName;
+import bank.entity.parentClasses.Human;
 
-public class Employee extends BankOffice{
-    private Integer idEmployee;
-    private FullName fullNameEmployee;
-    private Date birthDayEmployee;
+public class Employee extends Human {
+    private Bank bank;
+    private BankOffice bankOffice;
     private String job;
     private Boolean distantWork;
     private Boolean canLend;
     private Double salary;
 
-    public Employee(BankOffice oldOffice, Integer idEmployee, FullName fullNameEmployee, Date birthDayEmployee, String job,
-                    Boolean distantWork, Boolean canLend, Double salary) {
-        super(oldOffice);
-        this.setIdEmployee(idEmployee);
-        this.setFullNameEmployee(fullNameEmployee);
-        this.setBirthDayEmployee(birthDayEmployee);
-        this.setJob(job);
-        this.setDistantWork(distantWork);
-        this.setCanLend(canLend);
-        this.setSalary(salary);
+    public Employee(Integer id, FullName name, Date birthday, Bank bank, BankOffice bankOffice, String job,
+                    Double salary) {
+        super(id, name, birthday);
+        this.bank = bank;
+        this.bankOffice = bankOffice;
+        this.job = job;
+        this.distantWork = true;
+        this.canLend = true;
+        this.salary = salary;
     }
 
-    public Employee(Employee oldEmployee) {
-        super(oldEmployee);
-        this.setIdEmployee(oldEmployee.getIdEmployee());
-        this.setFullNameEmployee(oldEmployee.getFullNameEmployee());
-        this.setBirthDayEmployee(oldEmployee.getBirthDayEmployee());
-        this.setJob(oldEmployee.getJob());
-        this.setDistantWork(oldEmployee.getDistantWork());
-        this.setCanLend(oldEmployee.getCanLend());
-        this.setSalary(oldEmployee.getSalary());
+    public Employee() {
+        super(-1, new FullName("", ""), new Date());
+        this.bank = new Bank();
+        this.bankOffice = new BankOffice();
+        this.job = "";
+        this.distantWork = true;
+        this.canLend = true;
+        this.salary = -1.0;
     }
 
-    public Integer getIdEmployee() {
-        return idEmployee;
+    @Override
+    public String toString() {
+        String str = "ФИО: " + super.getName().toString() + "\nДата рождения: " + super.getBirthDay() +
+                "\nДолжность: " + job + "\nИмя банка: " + bank.getName();
+        if (distantWork)
+            str += "\nРаботает удалённо";
+        else
+            str += "\nРаботает в офисе";
+        if (canLend)
+            str += "\nМожет выдавать кредиты";
+        else
+            str += "\nНе может выдавать кредиты";
+        str += "\nИмя офиса: " + bankOffice.getName() + "\nЗарплата: " + salary;
+        return str;
     }
 
-    public void setIdEmployee(Integer idEmployee) {
-        this.idEmployee = idEmployee;
+    public Bank getBank() {
+        return bank;
     }
 
-    public FullName getFullNameEmployee() {
-        return fullNameEmployee;
+    public void setBank(Bank bank) {
+        this.bank = bank;
     }
 
-    public void setFullNameEmployee(FullName fullNameEmployee) {
-        this.fullNameEmployee = fullNameEmployee;
+    public BankOffice getBankOffice() {
+        return bankOffice;
     }
 
-    public Date getBirthDayEmployee() {
-        return birthDayEmployee;
-    }
-
-    public void setBirthDayEmployee(Date birthDayEmployee) {
-        this.birthDayEmployee = birthDayEmployee;
+    public void setBankOffice(BankOffice bankOffice) {
+        this.bankOffice = bankOffice;
     }
 
     public String getJob() {

@@ -8,8 +8,8 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     которому принадлежит данный платёжный счёт*/
     @Override
     public void addMoney(PaymentAccount payAcc, Double sumMoney) {
-        payAcc.setAmountPayAcc(payAcc.getAmountPayAcc() + sumMoney);
-        payAcc.setMoneyBank(payAcc.getMoneyBank() + sumMoney);
+        payAcc.setAmount(payAcc.getAmount() + sumMoney);
+        payAcc.getBank().setMoney(payAcc.getBank().getMoney() + sumMoney);
     }
 
     /*Вычитание суммы денег с платёжного счёта, и, соответственно, вычитание суммы денег из банка этого платёжного
@@ -17,10 +17,10 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     то возвращается false, иначе true*/
     @Override
     public Boolean subtractMoney(PaymentAccount payAcc, Double sumMoney) {
-        if (payAcc.getAmountPayAcc() < sumMoney)
+        if (payAcc.getAmount() < sumMoney)
             return Boolean.FALSE;
-        payAcc.setAmountPayAcc(payAcc.getAmountPayAcc() - sumMoney);
-        payAcc.setMoneyBank(payAcc.getMoneyBank() - sumMoney);
+        payAcc.setAmount(payAcc.getAmount() - sumMoney);
+        payAcc.getBank().setMoney(payAcc.getBank().getMoney() - sumMoney);
         return Boolean.TRUE;
     }
 }

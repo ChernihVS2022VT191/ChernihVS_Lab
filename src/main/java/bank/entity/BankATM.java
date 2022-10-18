@@ -1,48 +1,114 @@
 package bank.entity;
 
-public class BankATM extends Employee {
-    private Integer idATM;
-    private String nameATM;
-    private int statusATM;
+import bank.entity.helpClass.StatusATM;
+
+public class BankATM {
+    private Integer id;
+    private String name;
+    private Bank bank;
+    private BankOffice bankOffice;
+    private Employee employee;
+    private StatusATM status;
     private Boolean workPayMoney;
     private Boolean workDepositMoney;
-    private Double moneyATM;
+    private Double money;
     private Double maintenanceCost;
 
-    public BankATM(Employee oldEmployee, Integer idATM, String nameATM, int status, Boolean workPayMoney,
-                   Boolean workDepositMoney, Double moneyATM, Double maintenanceCost) {
-        super(oldEmployee);
-        setIdATM(idATM);
-        setNameATM(nameATM);
-        setStatus(status);
-        setWorkPayMoney(workPayMoney);
-        setWorkDepositMoney(workDepositMoney);
-        setMoneyATM(moneyATM);
-        setMaintenanceCost(maintenanceCost);
+    public BankATM(Integer id, String name, StatusATM status, Boolean workPayMoney, Boolean workDepositMoney,
+                   Double maintenanceCost, Bank bank, BankOffice bankOffice, Employee employee) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.workPayMoney = workPayMoney;
+        this.workDepositMoney = workDepositMoney;
+        this.maintenanceCost = maintenanceCost;
+        this.bank = bank;
+        this.employee = employee;
+        this.money = 0.0;
+        this.bankOffice = bankOffice;
     }
 
-    public Integer getIdATM() {
-        return idATM;
+    public BankATM() {
+        this.id = -1;
+        this.name = "";
+        this.status = StatusATM.Work;
+        this.workPayMoney = Boolean.TRUE;
+        this.workDepositMoney = Boolean.TRUE;
+        this.maintenanceCost = -1.0;
+        this.bank = null;
+        this.employee = null;
+        this.money = 0.0;
+        this.bankOffice = null;
     }
 
-    public void setIdATM(Integer idATM) {
-        this.idATM = idATM;
+    @Override
+    public String toString() {
+        String str = "Имя банкомата: " + name + "\nАдрес: " + bankOffice.getAddress() + "\nСтатус: ";
+        switch (status) {
+            case Work -> str += "работает";
+            case NotWork -> str += "Не работает";
+            case NoMoney -> str += "Нет денег";
+        }
+        str += "\nИмя банка: " + bank.getName() + "\nИмя офиса: " + bankOffice.getName() +
+                "\nИмя обслуживающего сотрудника: " + employee.getName();
+        if (workPayMoney)
+            str += "\nРаботает на выдачу денег";
+        else
+            str += "\nНе работает на выдачу денег";
+        if (workDepositMoney)
+            str += "\nМожно внести деньги";
+        else
+            str += "\nНельзя внести деньги";
+        str += "\nДенежная сумма: " + money + "\nСтоимость обслуживания: " + maintenanceCost;
+        return str;
     }
 
-    public String getNameATM() {
-        return nameATM;
+    public Integer getId() {
+        return id;
     }
 
-    public void setNameATM(String nameATM) {
-        this.nameATM = nameATM;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public int getStatus() {
-        return statusATM;
+    public String getName() {
+        return name;
     }
 
-    public void setStatus(int statusATM) {
-        this.statusATM = statusATM;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Bank getBank() {
+        return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
+    }
+
+    public BankOffice getBankOffice() {
+        return bankOffice;
+    }
+
+    public void setBankOffice(BankOffice bankOffice) {
+        this.bankOffice = bankOffice;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public StatusATM getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusATM statusATM) {
+        this.status = statusATM;
     }
 
     public Boolean getWorkPayMoney() {
@@ -61,12 +127,12 @@ public class BankATM extends Employee {
         this.workDepositMoney = workDepositMoney;
     }
 
-    public Double getMoneyATM() {
-        return moneyATM;
+    public Double getMoney() {
+        return money;
     }
 
-    public void setMoneyATM(Double moneyATM) {
-        this.moneyATM = moneyATM;
+    public void setMoney(Double money) {
+        this.money = money;
     }
 
     public Double getMaintenanceCost() {

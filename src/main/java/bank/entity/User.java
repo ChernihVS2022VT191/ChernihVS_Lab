@@ -1,26 +1,20 @@
 package bank.entity;
 
-import bank.entity.helpClass.FullName;
-
 import java.util.Date;
 import java.util.Random;
+import bank.entity.helpClass.FullName;
+import bank.entity.parentClasses.Human;
 
-public class User extends Bank{
-    private Integer idUser;
-    private FullName fullNameUser;
-    private Date birthDayUser;
-    private String workUser;
+public class User extends Human {
+    private String work;
     private Double monthSalary;
     private Integer creditRating;
 
-    public User(Bank oldBank, Integer idUser, FullName fullNameUser, Date birthDayUser, String workUser) {
-        super(oldBank);
-        this.setIdUser(idUser);
-        this.setFullNameUser(fullNameUser);
-        this.setBirthDayUser(birthDayUser);
-        this.setWorkUser(workUser);
+    public User(Integer id, FullName name, Date birthDay, String work) {
+        super(id, name, birthDay);
+        this.work = work;
         Random random = new Random();
-        this.setMonthSalary(random.nextDouble(1, 10000));
+        this.monthSalary = random.nextDouble(1, 10000);
         int creditRating = 0;
         Integer startRat = 0;
         Integer endRat = 1000;
@@ -32,49 +26,40 @@ public class User extends Bank{
                 endRat += 1000;
             }
         }
-        this.setCreditRating(creditRating);
+        this.creditRating = creditRating;
     }
 
-    public User(User oldUser) {
-        super(oldUser);
-        this.setIdUser(oldUser.getIdUser());
-        this.setFullNameUser(oldUser.getFullNameUser());
-        this.setBirthDayUser(oldUser.getBirthDayUser());
-        this.setWorkUser(oldUser.getWorkUser());
-        this.setMonthSalary(oldUser.getMonthSalary());
-        this.setCreditRating(oldUser.getCreditRating());
+    public User() {
+        super(-1, new FullName("", ""), new Date());
+        this.work = "";
+        Random random = new Random();
+        this.monthSalary = random.nextDouble(1, 10000);
+        int creditRating = 0;
+        Integer startRat = 0;
+        Integer endRat = 1000;
+        while ((startRat != 10000) && (creditRating == 0)) {
+            if ((getMonthSalary() <= endRat) && (getMonthSalary() >= startRat))
+                creditRating = endRat / 10;
+            else {
+                startRat += 1000;
+                endRat += 1000;
+            }
+        }
+        this.creditRating = creditRating;
     }
 
-    public Integer getIdUser() {
-        return idUser;
+    @Override
+    public String toString() {
+        return "ФИО: " + super.getName().toString() + "\nДата рождения: " + super.getBirthDay() + "\nРабота: " +
+                work + "\nЗарплата: " + monthSalary + "\nКредитный рейтинг: " + creditRating;
     }
 
-    public void setIdUser(Integer idUser) {
-        this.idUser = idUser;
+    public String getWork() {
+        return work;
     }
 
-    public FullName getFullNameUser() {
-        return fullNameUser;
-    }
-
-    public void setFullNameUser(FullName fullNameUser) {
-        this.fullNameUser = fullNameUser;
-    }
-
-    public Date getBirthDayUser() {
-        return birthDayUser;
-    }
-
-    public void setBirthDayUser(Date birthDayUser) {
-        this.birthDayUser = birthDayUser;
-    }
-
-    public String getWorkUser() {
-        return workUser;
-    }
-
-    public void setWorkUser(String workUser) {
-        this.workUser = workUser;
+    public void setWork(String work) {
+        this.work = work;
     }
 
     public Double getMonthSalary() {

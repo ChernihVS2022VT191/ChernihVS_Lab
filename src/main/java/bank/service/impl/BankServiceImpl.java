@@ -8,18 +8,18 @@ public class BankServiceImpl implements BankService {
     и внесения в банк новой получившейся суммы*/
     @Override
     public void addMoney(Bank bank, Double sumMoney) {
-        Double sum = bank.getMoneyBank();
-        bank.setMoneyBank(sum + sumMoney);
+        Double sum = bank.getMoney();
+        bank.setMoney(sum + sumMoney);
     }
 
     /*Вычитание суммы денег из банка, путём взятия денег из банка, сравнения её с суммой списания, вычитание суммы
     списания из суммы, взятой из банка, и запись в банк новой суммы*/
     @Override
     public Boolean subtractMoney(Bank bank, Double sumMoney) {
-        Double sum = bank.getMoneyBank();
+        Double sum = bank.getMoney();
         if (sumMoney > sum)
             return Boolean.FALSE;
-        bank.setMoneyBank(sum - sumMoney);
+        bank.setMoney(sum - sumMoney);
         return Boolean.TRUE;
     }
 }

@@ -2,6 +2,7 @@ package bank.service.impl;
 
 import bank.entity.CreditAccount;
 import bank.entity.Employee;
+import bank.entity.PaymentAccount;
 import bank.service.CreditAccountService;
 
 import java.util.Objects;
@@ -12,11 +13,12 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     сотрудник может оформлять кредиты, то на платёжный счёт пользователя поступает запрошенная сумма, а
     из банка списывается указанная в заявке сумма. В случае оформления возвращается true, иначе false.*/
     @Override
-    public Boolean applyLoan(CreditAccount creditAcc, Employee employee) {
-        if ((creditAcc.getAmountCreditAcc() > creditAcc.getMoneyBank()) || (!employee.getMayApplyLoan()) || (!Objects.equals(employee.getIdEmployee(), creditAcc.getEmployeeId())))
+    public Boolean applyLoan(CreditAccount creditAcc, PaymentAccount paymentAccount, Employee employee) {
+        if ((creditAcc.getAmount() > creditAcc.getBank().getMoney()) || (!employee.getCanLend())
+                || (!Objects.equals(creditAcc.getEmployee(), employee)))
             return Boolean.FALSE;
-        creditAcc.setAmountPayAcc(creditAcc.getAmountPayAcc() + creditAcc.getAmountCreditAcc());
-        creditAcc.setMoneyBank(creditAcc.getMoneyBank() - creditAcc.getAmountCreditAcc());
+        creditAcc.getBank().setMoney(creditAcc.getBank().getMoney() - creditAcc.getAmount());
+        paymentAccount.setAmount(paymentAccount.getAmount() + creditAcc.getAmount());
         return Boolean.TRUE;
     }
 }

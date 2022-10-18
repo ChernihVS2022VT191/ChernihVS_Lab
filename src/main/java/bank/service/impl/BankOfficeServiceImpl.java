@@ -1,5 +1,6 @@
 package bank.service.impl;
 
+import bank.entity.BankATM;
 import bank.entity.BankOffice;
 import bank.service.BankOfficeService;
 
@@ -7,18 +8,22 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     /*Добавление суммы денег в офис, и затем в банк этого офиса*/
     @Override
     public void addMoney(BankOffice office, Double sumMoney) {
-        office.setMoneyBank(office.getMoneyBank() + sumMoney);
-        office.setMoneyOffice(office.getMoneyOffice() + sumMoney);
+        Double sumBank = office.getBank().getMoney();
+        Double sumOffice = office.getMoney();
+        office.getBank().setMoney(sumBank + sumMoney);
+        office.setMoney(sumOffice + sumMoney);
     }
 
     /*Вычитание суммы денег из офиса и из банка этого офиса, с проверкой того, достаточно ли денег в офисе,
     чтобы их вычесть. Если не достаточно, то возвращается false, иначе true*/
     @Override
     public Boolean subtractMoney(BankOffice office, Double sumMoney) {
-        if (office.getMoneyOffice() < sumMoney)
+        Double sumBank = office.getBank().getMoney();
+        Double sumOffice = office.getMoney();
+        if (sumOffice < sumMoney)
             return Boolean.FALSE;
-        office.setMoneyBank(office.getMoneyBank() - sumMoney);
-        office.setMoneyOffice(office.getMoneyOffice() - sumMoney);
+        office.getBank().setMoney(sumBank - sumMoney);
+        office.setMoney(sumOffice - sumMoney);
         return Boolean.TRUE;
     }
 
@@ -28,18 +33,16 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     public Boolean addATM(BankOffice office) {
         if (!office.getMaySetATM())
             return Boolean.FALSE;
-        office.setCountATMOffice(office.getCountATMOffice() + 1);
-        office.setCountATMBank(office.getCountATMBank() + 1);
+        office.setCountATM(office.getCountATM() + 1);
+        office.getBank().setCountATM(office.getBank().getCountATM() + 1);
         return Boolean.TRUE;
     }
 
     /*Вычитание банкомата из офиса, и затем из банка этого офиса*/
     @Override
-    public Boolean subtractATM(BankOffice office) {
-        if (!office.getMaySetATM())
-            return Boolean.FALSE;
-        office.setCountATMOffice(office.getCountATMOffice() - 1);
-        office.setCountATMBank(office.getCountATMBank() - 1);
-        return Boolean.TRUE;
+    public void subtractATM(BankOffice office, BankATM bankATM) {
+        office.setCountATM(office.getCountATM() - 1);
+        office.getBank().setCountATM(office.getCountATM() - 1);
+        bankATM.setBankOffice(new BankOffice());
     }
 }

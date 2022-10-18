@@ -3,55 +3,63 @@ package bank.entity;
 import java.util.Random;
 
 public class Bank {
-    private Integer idBank;
-    private String nameBank;
+    private Integer id;
+    private String name;
     private Integer countOffice;
-    private Integer countATMBank;
-    private Integer countEmployeesBank;
+    private Integer countATM;
+    private Integer countEmployees;
     private Integer countClients;
     private Integer rating;
-    private Double moneyBank;
+    private Double money;
     private Double interestRate;
 
-    public Bank(Integer idBank, String nameBank) {
-        setIdBank(idBank);
-        setNameBank(nameBank);
-        setCountOffice(0);
-        setCountATMBank(0);
-        setCountEmployeesBank(0);
-        setCountClients(0);
+    public Bank(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+        this.countOffice = 0;
+        this.countATM = 0;
+        this.countEmployees = 0;
+        this.countClients = 0;
         Random random = new Random();
-        setRating(random.nextInt(0, 100));
-        setMoneyBank(random.nextDouble(0, 1000000));
-        setInterestRate(20.0 - this.rating / 5);
+        this.rating = random.nextInt(0, 100);
+        this.money = random.nextDouble(0, 1000000);
+        this.interestRate = 20.0 - this.getRating() / 5.0;
     }
 
-    public Bank(Bank oldBank) {
-        setIdBank(oldBank.getIdBank());
-        setNameBank(oldBank.getNameBank());
-        setCountOffice(oldBank.getCountOffice());
-        setCountATMBank(oldBank.getCountATMBank());
-        setCountEmployeesBank(oldBank.getCountEmployeesBank());
-        setCountClients(oldBank.getCountClients());
-        setRating(oldBank.getRating());
-        setMoneyBank(oldBank.getMoneyBank());
-        setInterestRate(oldBank.getInterestRate());
+    public Bank() {
+        this.id = -1;
+        this.name = "";
+        this.countOffice = 0;
+        this.countATM = 0;
+        this.countEmployees = 0;
+        this.countClients = 0;
+        Random random = new Random();
+        this.rating = random.nextInt(0, 100);
+        this.money = random.nextDouble(0, 1000000);
+        this.interestRate = 20.0 - this.getRating() / 5.0;
     }
 
-    public Integer getIdBank() {
-        return idBank;
+    @Override
+    public String toString() {
+        return "Имя банка: " + name + "\nКоличество офисов: " + countOffice + "\nКоличество банкоматов: " + countATM +
+                "\nКоличество сотрудников: " + countEmployees + "\nКоличество клиентов: " + countClients +
+                "\nРейтинг: " + rating + "\nКоличество денег: " + money + "\nПроцентная ставка: " + interestRate;
     }
 
-    public void setIdBank(Integer idBank) {
-        this.idBank = idBank;
+    public Integer getId() {
+        return id;
     }
 
-    public String getNameBank() {
-        return nameBank;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setNameBank(String nameBank) {
-        this.nameBank = nameBank;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getCountOffice() {
@@ -62,20 +70,20 @@ public class Bank {
         this.countOffice = countOffice;
     }
 
-    public Integer getCountATMBank() {
-        return countATMBank;
+    public Integer getCountATM() {
+        return countATM;
     }
 
-    public void setCountATMBank(Integer countATM) {
-        this.countATMBank = countATM;
+    public void setCountATM(Integer countATM) {
+        this.countATM = countATM;
     }
 
-    public Integer getCountEmployeesBank() {
-        return countEmployeesBank;
+    public Integer getCountEmployees() {
+        return countEmployees;
     }
 
-    public void setCountEmployeesBank(Integer countEmployeesBank) {
-        this.countEmployeesBank = countEmployeesBank;
+    public void setCountEmployees(Integer countEmployees) {
+        this.countEmployees = countEmployees;
     }
 
     public Integer getCountClients() {
@@ -94,12 +102,12 @@ public class Bank {
         this.rating = rating;
     }
 
-    public Double getMoneyBank() {
-        return moneyBank;
+    public Double getMoney() {
+        return money;
     }
 
-    public void setMoneyBank(Double moneyBank) {
-        this.moneyBank = moneyBank;
+    public void setMoney(Double money) {
+        this.money = money;
     }
 
     public Double getInterestRate() {

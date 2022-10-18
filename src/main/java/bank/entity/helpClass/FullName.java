@@ -5,10 +5,18 @@ public class FullName {
     private String surname;
     private String middleName = null;
 
-    public FullName(String name, String middleName, String surname) {
+    public FullName(String name, String surname, String middleName) {
         this.setName(name);
         this.setSurname(surname);
         this.setMiddleName(middleName);
+    }
+
+    @Override
+    public String toString() {
+        if (middleName != null)
+            return name + " " + surname + " " + middleName;
+        else
+            return name + " " + surname;
     }
 
     public FullName(String name, String surname) {

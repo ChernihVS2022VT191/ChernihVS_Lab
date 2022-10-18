@@ -7,7 +7,7 @@ public class UserServiceImpl implements UserService {
     /*Смена пользователем работы, а соответственно, и заработной платы, и пересчёт его кредитного рейтинга*/
     @Override
     public void changeWork(User user, String newWork, Double newMonthSalary) {
-        user.setWorkUser(newWork);
+        user.setWork(newWork);
         user.setMonthSalary(newMonthSalary);
         int creditRating = 0;
         int startRat = 0;
@@ -22,6 +22,8 @@ public class UserServiceImpl implements UserService {
         }
         user.setCreditRating(creditRating);
     }
+
+    /*Смена пользователем заработной платы, а соответственно, и пересчёт его кредитного рейтинга*/
     @Override
     public void changeMonthSalary(User user, Double newMonthSalary) {
         user.setMonthSalary(newMonthSalary);

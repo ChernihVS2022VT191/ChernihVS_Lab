@@ -1,80 +1,116 @@
 package bank.entity;
 
-public class BankOffice extends Bank{
-    private int idOffice;
-    private String nameOffice;
+import bank.entity.helpClass.StatusOffice;
+
+public class BankOffice {
+    private Integer id;
+    private String name;
+    private Bank bank;
     private String address;
-    private int statusOffice;
-    private boolean maySetATM;
-    private int countATMOffice;
-    private boolean mayApplyLoan;
-    private boolean mayWithdrawMoney;
-    private boolean mayDepositMoney;
-    private double moneyOffice;
-    private double rentCost;
+    private StatusOffice status;
+    private Boolean maySetATM;
+    private Integer countATM;
+    private Boolean mayApplyLoan;
+    private Boolean mayWithdrawMoney;
+    private Boolean mayDepositMoney;
+    private Double money;
+    private Double rentCost;
 
-    public BankOffice(Bank oldBank, int idOffice, String nameOffice, String address, int statusOffice,
-                      boolean maySetATM, boolean mayApplyLoan, boolean mayWithdrawMoney,
-                      boolean mayDepositMoney, double moneyOffice, double rentCost) {
-        super(oldBank);
-        this.setIdOffice(idOffice);
-        this.setNameOffice(nameOffice);
-        this.setAddress(address);
-        this.setStatusOffice(statusOffice);
-        this.setMaySetATM(maySetATM);
-        this.setCountATMOffice(0);
-        this.setMayApplyLoan(mayApplyLoan);
-        this.setMayWithdrawMoney(mayWithdrawMoney);
-        this.setMayDepositMoney(mayDepositMoney);
-        this.setMoneyOffice(moneyOffice);
-        this.setRentCost(rentCost);
+    public BankOffice(Integer id, String name, Bank bank, String address, StatusOffice status, Double rentCost) {
+        this.id = id;
+        this.name = name;
+        this.bank = bank;
+        this.bank.setCountOffice(this.bank.getCountOffice() + 1);
+        this.address = address;
+        this.status = status;
+        this.maySetATM = true;
+        this.countATM = 0;
+        this.mayApplyLoan = true;
+        this.mayWithdrawMoney = true;
+        this.mayDepositMoney = true;
+        this.money = 0.0;
+        this.rentCost = rentCost;
     }
 
-    public BankOffice(BankOffice oldOffice) {
-        super(oldOffice);
-        this.setIdOffice(oldOffice.getIdOffice());
-        this.setNameOffice(oldOffice.getNameOffice());
-        this.setAddress(oldOffice.getAddress());
-        this.setStatusOffice(oldOffice.getStatusOffice());
-        this.setMaySetATM(oldOffice.getMaySetATM());
-        this.setCountATMOffice(oldOffice.getCountATMOffice());
-        this.setMayApplyLoan(oldOffice.getMayApplyLoan());
-        this.setMayWithdrawMoney(oldOffice.getMayWithdrawMoney());
-        this.setMayDepositMoney(oldOffice.getMayDepositMoney());
-        this.setMoneyOffice(oldOffice.getMoneyOffice());
-        this.setRentCost(oldOffice.getRentCost());
+    public BankOffice() {
+        this.id = -1;
+        this.name = "";
+        this.bank = new Bank();
+        this.address = "";
+        this.status = StatusOffice.Work;
+        this.maySetATM = true;
+        this.countATM = 0;
+        this.mayApplyLoan = true;
+        this.mayWithdrawMoney = true;
+        this.mayDepositMoney = true;
+        this.money = 0.0;
+        this.rentCost = -1.0;
     }
 
-    public Integer getIdOffice() {
-        return idOffice;
+    @Override
+    public String toString() {
+        String str =  "Название офиса: " + name + "\nИмя банка: " + bank.getName() + "\nАдрес: " + address +
+                "\nСтатус: ";
+        if (status == StatusOffice.Work)
+            str+= "работает";
+        else
+            str+= "не работает";
+        if (maySetATM)
+            str += "\nМожно добавить банкомат";
+        else
+            str += "\nНельзя добавить банкомат";
+        if (maySetATM)
+            str += "\nКоличество банкоматов: " + countATM;
+        if (mayWithdrawMoney)
+            str += "\nРаботает на выдачу денег";
+        else
+            str += "\nНе работает на выдачу денег";
+        if (mayDepositMoney)
+            str += "\nМожно внести деньги";
+        else
+            str += "\nНельзя внести деньги";
+        str += "\nДенежная сумма: " + money + "\nАрендная плата: " + rentCost;
+        return str;
     }
 
-    public void setIdOffice(Integer idBank) {
-        this.idOffice = idBank;
+    public Integer getId() {
+        return id;
     }
 
-    public String getNameOffice() {
-        return nameOffice;
+    public void setId(Integer idBank) {
+        this.id = idBank;
     }
 
-    public void setNameOffice(String nameBank) {
-        this.nameOffice = nameBank;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String nameBank) {
+        this.name = nameBank;
     }
 
     public String getAddress() {
         return address;
     }
 
+    public Bank getBank() {
+        return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
+    }
+
     public void setAddress(String address) {
         this.address = address;
     }
 
-    public int getStatusOffice() {
-        return statusOffice;
+    public StatusOffice getStatus() {
+        return status;
     }
 
-    public void setStatusOffice(int statusOffice) {
-        this.statusOffice = statusOffice;
+    public void setStatus(StatusOffice status) {
+        this.status = status;
     }
 
     public Boolean getMaySetATM() {
@@ -85,12 +121,12 @@ public class BankOffice extends Bank{
         this.maySetATM = maySetATM;
     }
 
-    public Integer getCountATMOffice() {
-        return countATMOffice;
+    public Integer getCountATM() {
+        return countATM;
     }
 
-    public void setCountATMOffice(Integer countATM) {
-        this.countATMOffice = countATM;
+    public void setCountATM(Integer countATM) {
+        this.countATM = countATM;
     }
 
     public Boolean getMayApplyLoan() {
@@ -117,12 +153,12 @@ public class BankOffice extends Bank{
         this.mayDepositMoney = mayDepositMoney;
     }
 
-    public Double getMoneyOffice() {
-        return moneyOffice;
+    public Double getMoney() {
+        return money;
     }
 
-    public void setMoneyOffice(Double money) {
-        this.moneyOffice = money;
+    public void setMoney(Double money) {
+        this.money = money;
     }
 
     public Double getRentCost() {

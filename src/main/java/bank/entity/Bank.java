@@ -1,7 +1,5 @@
 package bank.entity;
 
-import java.util.Random;
-
 public class Bank {
     private Integer id;
     private String name;
@@ -20,23 +18,9 @@ public class Bank {
         this.countATM = 0;
         this.countEmployees = 0;
         this.countClients = 0;
-        Random random = new Random();
-        this.rating = random.nextInt(0, 100);
-        this.money = random.nextDouble(0, 1000000);
-        this.interestRate = 20.0 - this.getRating() / 5.0;
-    }
-
-    public Bank() {
-        this.id = -1;
-        this.name = "";
-        this.countOffice = 0;
-        this.countATM = 0;
-        this.countEmployees = 0;
-        this.countClients = 0;
-        Random random = new Random();
-        this.rating = random.nextInt(0, 100);
-        this.money = random.nextDouble(0, 1000000);
-        this.interestRate = 20.0 - this.getRating() / 5.0;
+        this.rating = null;
+        this.money = null;
+        this.interestRate = null;
     }
 
     @Override

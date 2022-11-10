@@ -9,36 +9,23 @@ public class BankATM {
     private BankOffice bankOffice;
     private Employee employee;
     private StatusATM status;
-    private Boolean workPayMoney;
+    private Boolean workIssuanceMoney;
     private Boolean workDepositMoney;
     private Double money;
     private Double maintenanceCost;
 
-    public BankATM(Integer id, String name, StatusATM status, Boolean workPayMoney, Boolean workDepositMoney,
+    public BankATM(Integer id, String name, StatusATM status, Boolean workIssuanceMoney, Boolean workDepositMoney,
                    Double maintenanceCost, Bank bank, BankOffice bankOffice, Employee employee) {
         this.id = id;
         this.name = name;
         this.status = status;
-        this.workPayMoney = workPayMoney;
+        this.workIssuanceMoney = workIssuanceMoney;
         this.workDepositMoney = workDepositMoney;
         this.maintenanceCost = maintenanceCost;
         this.bank = bank;
         this.employee = employee;
         this.money = 0.0;
         this.bankOffice = bankOffice;
-    }
-
-    public BankATM() {
-        this.id = -1;
-        this.name = "";
-        this.status = StatusATM.Work;
-        this.workPayMoney = Boolean.TRUE;
-        this.workDepositMoney = Boolean.TRUE;
-        this.maintenanceCost = -1.0;
-        this.bank = null;
-        this.employee = null;
-        this.money = 0.0;
-        this.bankOffice = null;
     }
 
     @Override
@@ -50,8 +37,8 @@ public class BankATM {
             case NoMoney -> str += "Нет денег";
         }
         str += "\nИмя банка: " + bank.getName() + "\nИмя офиса: " + bankOffice.getName() +
-                "\nИмя обслуживающего сотрудника: " + employee.getName();
-        if (workPayMoney)
+                "\nИмя обслуживающего сотрудника: " + employee.getFullName();
+        if (workIssuanceMoney)
             str += "\nРаботает на выдачу денег";
         else
             str += "\nНе работает на выдачу денег";
@@ -111,12 +98,12 @@ public class BankATM {
         this.status = statusATM;
     }
 
-    public Boolean getWorkPayMoney() {
-        return workPayMoney;
+    public Boolean getWorkIssuanceMoney() {
+        return workIssuanceMoney;
     }
 
-    public void setWorkPayMoney(Boolean workPayMoney) {
-        this.workPayMoney = workPayMoney;
+    public void setWorkIssuanceMoney(Boolean workIssuanceMoney) {
+        this.workIssuanceMoney = workIssuanceMoney;
     }
 
     public Boolean getWorkDepositMoney() {

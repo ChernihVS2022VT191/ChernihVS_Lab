@@ -1,8 +1,6 @@
 package bank.entity;
 
-import java.util.Date;
-import java.util.Random;
-import bank.entity.helpClass.FullName;
+import java.time.LocalDate;
 import bank.entity.parentClasses.Human;
 
 public class User extends Human {
@@ -10,47 +8,23 @@ public class User extends Human {
     private Double monthSalary;
     private Integer creditRating;
 
-    public User(Integer id, FullName name, Date birthDay, String work) {
-        super(id, name, birthDay);
+    public User(Integer id, String name, String surname, LocalDate birthDay, String work) {
+        super(id, name, surname, birthDay);
         this.work = work;
-        Random random = new Random();
-        this.monthSalary = random.nextDouble(1, 10000);
-        int creditRating = 0;
-        Integer startRat = 0;
-        Integer endRat = 1000;
-        while ((startRat != 10000) && (creditRating == 0)) {
-            if ((getMonthSalary() <= endRat) && (getMonthSalary() >= startRat))
-                creditRating = endRat / 10;
-            else {
-                startRat += 1000;
-                endRat += 1000;
-            }
-        }
-        this.creditRating = creditRating;
+        this.monthSalary = null;
+        this.creditRating = null;
     }
 
-    public User() {
-        super(-1, new FullName("", ""), new Date());
-        this.work = "";
-        Random random = new Random();
-        this.monthSalary = random.nextDouble(1, 10000);
-        int creditRating = 0;
-        Integer startRat = 0;
-        Integer endRat = 1000;
-        while ((startRat != 10000) && (creditRating == 0)) {
-            if ((getMonthSalary() <= endRat) && (getMonthSalary() >= startRat))
-                creditRating = endRat / 10;
-            else {
-                startRat += 1000;
-                endRat += 1000;
-            }
-        }
-        this.creditRating = creditRating;
+    public User(Integer id, String name, String surname, String middleName, LocalDate birthDay, String work) {
+        super(id, name, surname, middleName, birthDay);
+        this.work = work;
+        this.monthSalary = null;
+        this.creditRating = null;
     }
 
     @Override
     public String toString() {
-        return "ФИО: " + super.getName().toString() + "\nДата рождения: " + super.getBirthDay() + "\nРабота: " +
+        return "ФИО: " + super.getFullName() + "\nДата рождения: " + super.getBirthDay() + "\nРабота: " +
                 work + "\nЗарплата: " + monthSalary + "\nКредитный рейтинг: " + creditRating;
     }
 

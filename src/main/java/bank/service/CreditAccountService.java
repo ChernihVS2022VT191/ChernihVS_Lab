@@ -1,9 +1,15 @@
 package bank.service;
 
-import bank.entity.CreditAccount;
-import bank.entity.Employee;
-import bank.entity.PaymentAccount;
+import bank.entity.*;
+
+import java.time.LocalDate;
 
 public interface CreditAccountService {
-    Boolean applyLoan(CreditAccount creditAcc, PaymentAccount paymentAccount, Employee employee);
+    void create(Integer id, User user, Bank bank, Employee employee, PaymentAccount paymentAccount,
+                LocalDate startDate, Integer countMonth, Double amount);
+    void update(CreditAccount creditAcc);
+    void delete();
+    CreditAccount getCreditAcc();
+
+    Boolean applyLoan(PaymentAccount paymentAccount, Employee employee);
 }

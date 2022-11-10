@@ -1,8 +1,20 @@
 package bank.service;
 
+import bank.entity.Bank;
+import bank.entity.BankOffice;
 import bank.entity.Employee;
 
+import java.time.LocalDate;
+
 public interface EmployeeService {
-    void toDistantWork(Employee employee);
-    void toOfficeWork(Employee employee);
+    void create(Integer id, String name, String surname, LocalDate birthday, Bank bank, BankOffice bankOffice,
+                String profession, Double salary);
+    void update(Employee employee);
+    void delete();
+    Employee getEmployee();
+
+    void toDistantWork();
+    void toOfficeWork();
+    void toCanIssue();
+    void toCannotIssue();
 }

@@ -10,14 +10,9 @@ public class PaymentAccount extends BankAccount {
         this.amount = 0.0;
     }
 
-    public PaymentAccount() {
-        super(-1, new User(), new Bank());
-        this.amount = 0.0;
-    }
-
     @Override
     public String toString() {
-        return "Имя банка: " + super.getBank().getName() + "\nФИО пользователя: " + super.getUser().getName().toString()
+        return "Имя банка: " + super.getBank().getName() + "\nФИО пользователя: " + super.getUser().getFullName()
                 + "\nСумма денег: " + amount;
     }
 

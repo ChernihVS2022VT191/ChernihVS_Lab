@@ -1,18 +1,34 @@
 package bank.entity.parentClasses;
 
-import bank.entity.helpClass.FullName;
-
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Human {
     private Integer id;
-    private FullName name;
-    private Date birthDay;
+    private String name;
+    private String surname;
+    private String middleName = null;
+    private LocalDate birthDay;
 
-    public Human(Integer id, FullName name, Date birthDay) {
+    public Human(Integer id, String name, String surname, LocalDate birthDay) {
         this.id = id;
         this.name = name;
+        this.surname = surname;
         this.birthDay = birthDay;
+    }
+
+    public Human(Integer id, String name, String surname, String middleName, LocalDate birthDay) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.middleName = middleName;
+        this.birthDay = birthDay;
+    }
+
+    public String getFullName() {
+        if (middleName != null)
+            return name + " " + surname + " " + middleName;
+        else
+            return name + " " + surname;
     }
 
     public Integer getId() {
@@ -23,17 +39,35 @@ public class Human {
         this.id = id;
     }
 
-    public FullName getName() {return name;}
+    public String getName() {
+        return name;
+    }
 
-    public void setName(FullName name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public Date getBirthDay() {
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public LocalDate getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(Date birthDay) {
+    public void setBirthDay(LocalDate birthDay) {
         this.birthDay = birthDay;
     }
 }

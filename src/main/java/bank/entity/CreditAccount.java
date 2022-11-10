@@ -21,30 +21,18 @@ public class CreditAccount extends BankAccount {
         this.endDate = startDate.plusMonths(this.countMonth);
         this.amount = amount;
         this.interestRate = bank.getInterestRate();
-        this.monthlyAmount = (1 + getInterestRate() / 100) * amount / countMonth;
+        this.monthlyAmount = null;
         this.employee = employee;
         this.paymentAccount = paymentAccount;
     }
 
-    public CreditAccount() {
-        super();
-        this.startDate = LocalDate.of(1, 1, 1);
-        this.countMonth = 1;
-        this.endDate = startDate.plusMonths(this.countMonth);
-        this.amount = -1.0;
-        this.interestRate = 1.0;
-        this.monthlyAmount = (1 + getInterestRate() / 100) * amount / countMonth;
-        this.employee = new Employee();
-        this.paymentAccount = new PaymentAccount();
-    }
-
     @Override
     public String toString() {
-        return "Имя банка: " + super.getBank().getName() + "\nИмя пользователя: " + super.getUser().getName() +
+        return "Имя банка: " + super.getBank().getName() + "\nИмя пользователя: " + super.getUser().getFullName() +
                 "\nКоличество месяцев: " + countMonth + "\nДата взятия кредита: " + startDate.toString() +
                 "\nПредполагаемая дата погашения кредита:" + endDate.toString() + "\nСумма кредита: " +
                 amount + "\nПроцентная ставка: " + interestRate + "%" + "\nЕжемесячный платёж: " +
-                countMonth + "\nСотрудник, который выдал кредит: " + employee.getName() +
+                countMonth + "\nСотрудник, выдавший кредит: " + employee.getFullName() +
                 "\nId платёжного счёта: " + paymentAccount.getId().toString();
     }
 

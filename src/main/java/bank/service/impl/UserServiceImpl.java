@@ -3,10 +3,63 @@ package bank.service.impl;
 import bank.entity.User;
 import bank.service.UserService;
 
+import java.time.LocalDate;
+import java.util.Random;
+
 public class UserServiceImpl implements UserService {
-    /*Смена пользователем работы, а соответственно, и заработной платы, и пересчёт его кредитного рейтинга*/
+    private User user = null;
+
+    /*Создание экземпляра пользователя*/
     @Override
-    public void changeWork(User user, String newWork, Double newMonthSalary) {
+    public void create(Integer id, String name, String surname, LocalDate birthDay, String work) {
+        this.user = new User(id, name, surname, birthDay, work);
+        calcSalary();
+        calcCreditRating();
+    }
+
+    /*Обновление экземпляра пользователя*/
+    @Override
+    public void update(User user) {
+        this.user = user;
+    }
+
+    /*Обнуление экземпляра пользователя*/
+    @Override
+    public void delete() {
+        this.user = null;
+    }
+
+    /*Возврат экземпляра пользователя*/
+    @Override
+    public User getUser() {
+        return this.user;
+    }
+
+    /*Получение зарплаты пользователя рандомом*/
+    private void calcSalary() {
+        Random random = new Random();
+        user.setMonthSalary(random.nextDouble(1, 10000));
+    }
+
+    /*Получение кретитного рейтинга пользователя рандомом*/
+    private void calcCreditRating() {
+        int creditRating = 0;
+        Integer startRat = 0;
+        Integer endRat = 1000;
+        while ((startRat != 10000) && (creditRating == 0)) {
+            if ((user.getMonthSalary() <= endRat) && (user.getMonthSalary() >= startRat))
+                creditRating = endRat / 10;
+            else {
+                startRat += 1000;
+                endRat += 1000;
+            }
+        }
+        user.setCreditRating(creditRating);
+    }
+
+    /*Смена работы пользователя, а так же и заработной платы, и пересчёт его кредитного рейтинга*/
+    @Override
+    public void changeWork(String newWork, Double newMonthSalary) {
         user.setWork(newWork);
         user.setMonthSalary(newMonthSalary);
         int creditRating = 0;
@@ -23,9 +76,9 @@ public class UserServiceImpl implements UserService {
         user.setCreditRating(creditRating);
     }
 
-    /*Смена пользователем заработной платы, а соответственно, и пересчёт его кредитного рейтинга*/
+    /*Смена заработной платы пользователя, а так же и пересчёт его кредитного рейтинга*/
     @Override
-    public void changeMonthSalary(User user, Double newMonthSalary) {
+    public void changeMonthSalary(Double newMonthSalary) {
         user.setMonthSalary(newMonthSalary);
         int creditRating = 0;
         int startRat = 0;

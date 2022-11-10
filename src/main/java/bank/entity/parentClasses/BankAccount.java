@@ -14,12 +14,6 @@ abstract public class BankAccount {
         this.bank = bank;
     }
 
-    public BankAccount(){
-        this.id = -1;
-        this.user = new User();
-        this.bank = new Bank();
-    }
-
     public Integer getId() {
         return id;
     }

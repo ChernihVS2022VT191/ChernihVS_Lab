@@ -1,26 +1,54 @@
 package bank.service.impl;
 
+import bank.entity.Bank;
 import bank.entity.PaymentAccount;
+import bank.entity.User;
 import bank.service.PaymentAccountService;
 
 public class PaymentAccountServiceImpl implements PaymentAccountService {
+    private PaymentAccount payAcc = null;
+
+    /*Создание экземпляра платёжного счёта*/
+    @Override
+    public void create(Integer id, User user, Bank bank) {
+        this.payAcc = new PaymentAccount(id, user, bank);
+    }
+
+    /*Обновление экземпляра платёжного счёта*/
+    @Override
+    public void update(PaymentAccount payAcc) {
+        this.payAcc = payAcc;
+    }
+
+    /*Обнуление экземпляра платёжного счёта пользователя*/
+    @Override
+    public void delete() {
+        this.payAcc = null;
+    }
+
+    /*Возврат экземпляра платёжного счёта пользователя*/
+    @Override
+    public PaymentAccount getPayAcc() {
+        return this.payAcc;
+    }
+
     /*Добавление суммы денег на платёжный счёт, и затем добавление суммы денег в банк этого платёжного счёта,
     которому принадлежит данный платёжный счёт*/
     @Override
-    public void addMoney(PaymentAccount payAcc, Double sumMoney) {
-        payAcc.setAmount(payAcc.getAmount() + sumMoney);
-        payAcc.getBank().setMoney(payAcc.getBank().getMoney() + sumMoney);
+    public void addMoney(Double sumMoney) {
+        this.payAcc.setAmount(this.payAcc.getAmount() + sumMoney);
+        this.payAcc.getBank().setMoney(this.payAcc.getBank().getMoney() + sumMoney);
     }
 
     /*Вычитание суммы денег с платёжного счёта, и, соответственно, вычитание суммы денег из банка этого платёжного
     счёта, с проверкой того, достаточно ли денег на платёжном счету, чтобы их вычесть. Если не достаточно,
     то возвращается false, иначе true*/
     @Override
-    public Boolean subtractMoney(PaymentAccount payAcc, Double sumMoney) {
-        if (payAcc.getAmount() < sumMoney)
+    public Boolean subtractMoney(Double sumMoney) {
+        if (this.payAcc.getAmount() < sumMoney)
             return Boolean.FALSE;
-        payAcc.setAmount(payAcc.getAmount() - sumMoney);
-        payAcc.getBank().setMoney(payAcc.getBank().getMoney() - sumMoney);
+        this.payAcc.setAmount(this.payAcc.getAmount() - sumMoney);
+        this.payAcc.getBank().setMoney(this.payAcc.getBank().getMoney() - sumMoney);
         return Boolean.TRUE;
     }
 }

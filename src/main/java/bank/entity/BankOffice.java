@@ -20,7 +20,6 @@ public class BankOffice {
         this.id = id;
         this.name = name;
         this.bank = bank;
-        this.bank.setCountOffice(this.bank.getCountOffice() + 1);
         this.address = address;
         this.status = status;
         this.maySetATM = true;
@@ -30,21 +29,6 @@ public class BankOffice {
         this.mayDepositMoney = true;
         this.money = 0.0;
         this.rentCost = rentCost;
-    }
-
-    public BankOffice() {
-        this.id = -1;
-        this.name = "";
-        this.bank = new Bank();
-        this.address = "";
-        this.status = StatusOffice.Work;
-        this.maySetATM = true;
-        this.countATM = 0;
-        this.mayApplyLoan = true;
-        this.mayWithdrawMoney = true;
-        this.mayDepositMoney = true;
-        this.money = 0.0;
-        this.rentCost = -1.0;
     }
 
     @Override
@@ -65,6 +49,10 @@ public class BankOffice {
             str += "\nРаботает на выдачу денег";
         else
             str += "\nНе работает на выдачу денег";
+        if (mayApplyLoan)
+            str += "\nРаботает на выдачу кредитов";
+        else
+            str += "\nНе работает на выдачу кредитов";
         if (mayDepositMoney)
             str += "\nМожно внести деньги";
         else

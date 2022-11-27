@@ -4,6 +4,8 @@ import bank.entity.Bank;
 import bank.entity.CreditAccount;
 import bank.entity.PaymentAccount;
 import bank.entity.User;
+import bank.entity.exceptions.CreditAccAnotherUserException;
+import bank.entity.exceptions.PayAccAnotherUserException;
 import bank.service.CreditAccountService;
 import bank.service.PaymentAccountService;
 import bank.service.UserService;
@@ -82,14 +84,13 @@ public class UserServiceImpl implements UserService {
 
     /*Добавление кредитного счёта в список кредитных счетов клиента*/
     @Override
-    public Boolean addCreditAcc(CreditAccountService creditAcc) {
+    public void addCreditAcc(CreditAccountService creditAcc) throws CreditAccAnotherUserException {
         if (!Objects.equals(creditAcc.getCreditAcc().getUser(), this.user))
-            return false;
+            throw new CreditAccAnotherUserException();
         ArrayList<CreditAccount> creditAccounts = this.user.getCreditAccounts();
         creditAccounts.add(creditAcc.getCreditAcc());
         this.user.setCreditAccounts(creditAccounts);
         creditAcc.getCreditAcc().setUser(this.user);
-        return true;
     }
 
     /*Удаление кредитного счёта из списка кредитных счетов клиента*/
@@ -106,14 +107,13 @@ public class UserServiceImpl implements UserService {
 
     /*Добавление платёжного счёта в список платёжных счетов клиента*/
     @Override
-    public Boolean addPayAcc(PaymentAccountService payAcc) {
+    public void addPayAcc(PaymentAccountService payAcc) throws PayAccAnotherUserException {
         if (!Objects.equals(payAcc.getPayAcc().getUser(), this.user))
-            return false;
+            throw new PayAccAnotherUserException();
         ArrayList<PaymentAccount> paymentAccounts = this.user.getPaymentAccounts();
         paymentAccounts.add(payAcc.getPayAcc());
         this.user.setPaymentAccounts(paymentAccounts);
         payAcc.getPayAcc().setUser(this.user);
-        return true;
     }
 
     /*Удаление платёжного счёта из списка платёжных счетов клиента*/

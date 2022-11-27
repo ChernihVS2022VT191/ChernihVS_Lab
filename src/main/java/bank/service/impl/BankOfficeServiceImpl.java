@@ -4,6 +4,9 @@ import bank.entity.Bank;
 import bank.entity.BankATM;
 import bank.entity.BankOffice;
 import bank.entity.Employee;
+import bank.entity.exceptions.AtmAnotherBankException;
+import bank.entity.exceptions.AtmAnotherOfficeException;
+import bank.entity.exceptions.EmployeeAnotherOfficeException;
 import bank.entity.helpClass.StatusOffice;
 import bank.service.AtmService;
 import bank.service.BankOfficeService;
@@ -42,14 +45,13 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
     /*Добавление банкомата в список банкоматов офиса*/
     @Override
-    public Boolean addBankATM(AtmService atm) {
+    public void addBankATM(AtmService atm) throws AtmAnotherOfficeException {
         if (!Objects.equals(atm.getBankATM().getBankOffice(), this.bankOffice))
-            return false;
+            throw new AtmAnotherOfficeException();
         ArrayList<BankATM> bankATMS = this.bankOffice.getBankATMS();
         bankATMS.add(atm.getBankATM());
         this.bankOffice.setBankATMS(bankATMS);
         atm.getBankATM().setBankOffice(this.bankOffice);
-        return true;
     }
 
     /*Удаление банкомата из списка банкоматов офиса*/
@@ -66,14 +68,13 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
     /*Добавление работника в список работников офиса*/
     @Override
-    public Boolean addEmployee(EmployeeService employee) {
+    public void addEmployee(EmployeeService employee) throws EmployeeAnotherOfficeException {
         if (!Objects.equals(employee.getEmployee().getBankOffice(), this.bankOffice))
-            return false;
+            throw new EmployeeAnotherOfficeException();
         ArrayList<Employee> employees = this.bankOffice.getEmployees();
         employees.add(employee.getEmployee());
         this.bankOffice.setEmployees(employees);
         employee.getEmployee().setBankOffice(this.bankOffice);
-        return true;
     }
 
     /*Удаление работника из списка работников офиса*/
@@ -107,17 +108,6 @@ public class BankOfficeServiceImpl implements BankOfficeService {
             return Boolean.FALSE;
         this.bankOffice.getBank().setMoney(sumBank - sumMoney);
         this.bankOffice.setMoney(sumOffice - sumMoney);
-        return Boolean.TRUE;
-    }
-
-    /*Добавление нового банкомата в офис, и затем в банк этого офиса, с проверкой того, можно ли добавить
-    в этот офис новый банкомат. Если нельзя, то возвращается false, иначе true*/
-    @Override
-    public Boolean addATM() {
-        if (!this.bankOffice.getMaySetATM())
-            return Boolean.FALSE;
-        this.bankOffice.setCountATM(this.bankOffice.getCountATM() + 1);
-        this.bankOffice.getBank().setCountATM(this.bankOffice.getBank().getCountATM() + 1);
         return Boolean.TRUE;
     }
 

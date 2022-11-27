@@ -3,6 +3,8 @@ package bank.service;
 import bank.entity.Bank;
 import bank.entity.BankATM;
 import bank.entity.BankOffice;
+import bank.entity.exceptions.AtmAnotherOfficeException;
+import bank.entity.exceptions.EmployeeAnotherOfficeException;
 import bank.entity.helpClass.StatusOffice;
 
 public interface BankOfficeService {
@@ -11,14 +13,13 @@ public interface BankOfficeService {
     void delete();
     BankOffice getBankOffice();
 
-    Boolean addBankATM(AtmService atm);
+    void addBankATM(AtmService atm) throws AtmAnotherOfficeException;
     Boolean delBankATM(AtmService atm);
-    Boolean addEmployee(EmployeeService employee);
+    void addEmployee(EmployeeService employee) throws EmployeeAnotherOfficeException;
     Boolean delEmployee(EmployeeService employee);
 
     void addMoney(Double sumMoney);
     Boolean subtractMoney(Double sumMoney);
-    Boolean addATM();
     void subtractATM(BankATM bankATM);
     void toMaySetATM();
     void toNotMaySetATM();

@@ -1,5 +1,6 @@
 package bank;
 
+import bank.entity.exceptions.*;
 import bank.entity.helpClass.StatusATM;
 import bank.entity.helpClass.StatusOffice;
 import bank.service.impl.*;
@@ -8,7 +9,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws EmployeeAnotherBankException, EmployeeAnotherOfficeException,
+            AtmAnotherOfficeException, AtmAnotherBankException, OfficeAnotherBankException, PayAccAnotherUserException,
+            CreditAccAnotherUserException, UserAnotherBankException{
         ArrayList<BankServiceImpl> banks = new ArrayList<>();
         ArrayList<UserServiceImpl> users = new ArrayList<>();
         for (int i_1 = 0; i_1 < 5; i_1++) {
@@ -23,26 +26,16 @@ public class Main {
                     employeeService.create(i_3 + 5 * i_2 + 3 * i_1, String.format("Клим_%d", i_3 + 5 * i_2 + 3 * i_1), "Жуков",
                             LocalDate.of(1977, 3, 27), bankService.getBank(),
                             bankOfficeService.getBankOffice(), String.format("Работа_%d", i_3), 100.0);
-                    if (!bankOfficeService.addEmployee(employeeService)){
-                        System.out.println("Работник принадлежит другому офису");
-                    }
-                    if (!bankService.addEmployee(employeeService)){
-                        System.out.println("Работник принадлежит другому Банку");
-                    }
+                    bankOfficeService.addEmployee(employeeService);
+                    bankService.addEmployee(employeeService);
                 }
                 AtmServiceImpl atmService = new AtmServiceImpl();
                 atmService.create(i_2 + i_1, String.format("Банкомат_%d", i_2 + i_1), StatusATM.Work, Boolean.TRUE, Boolean.TRUE,
                         100.0, bankOfficeService.getBankOffice().getBank(),
                         bankOfficeService.getBankOffice(), bankOfficeService.getBankOffice().getEmployees().get(1));
-                if(!bankOfficeService.addBankATM(atmService)){
-                    System.out.println("Банкомат принадлежит другому офису");
-                }
-                if(!bankService.addBankATM(atmService)){
-                    System.out.println("Банкомат принадлежит другому банку");
-                }
-                if(!bankService.addBankOffice(bankOfficeService)){
-                    System.out.println("Офис принадлежит другому банку");
-                }
+                bankOfficeService.addBankATM(atmService);
+                bankService.addBankATM(atmService);
+                bankService.addBankOffice(bankOfficeService);
             }
 
             UserServiceImpl userService = new UserServiceImpl();
@@ -56,16 +49,10 @@ public class Main {
                 creditAccountService.create(i_2 + i_1, userService.getUser(), bankService.getBank(),
                         bankService.getBank().getEmployees().get(1), paymentAccountService.getPayAcc(),
                         LocalDate.of(2022, 11, 11), 12, 150.0);
-                if(!userService.addPayAcc(paymentAccountService)){
-                    System.out.println("Платёжный счёт принадлежит другому клиенту");
-                }
-                if(!userService.addCreditAcc(creditAccountService)){
-                    System.out.println("Кредитный аккаунт принадлежит другому клиенту");
-                }
+                userService.addPayAcc(paymentAccountService);
+                userService.addCreditAcc(creditAccountService);
             }
-            if(!bankService.addUser(userService)){
-                System.out.println("Клиент принадлежит другому банку");
-            }
+            bankService.addUser(userService);
             banks.add(bankService);
             users.add(userService);
         }

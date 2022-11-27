@@ -2,6 +2,8 @@ package bank.service;
 
 import bank.entity.Bank;
 import bank.entity.User;
+import bank.entity.exceptions.CreditAccAnotherUserException;
+import bank.entity.exceptions.PayAccAnotherUserException;
 
 import java.time.LocalDate;
 
@@ -13,9 +15,9 @@ public interface UserService {
 
     void addBank(Bank bank);
     void delBank(Bank bank);
-    Boolean addCreditAcc(CreditAccountService creditAcc);
+    void addCreditAcc(CreditAccountService creditAcc) throws CreditAccAnotherUserException;
     Boolean delCreditAcc(CreditAccountService creditAcc);
-    Boolean addPayAcc(PaymentAccountService payAcc);
+    void addPayAcc(PaymentAccountService payAcc) throws PayAccAnotherUserException;
     Boolean delPayAcc(PaymentAccountService payAcc);
 
     void changeWork(String newWork, Double newMonthSalary);

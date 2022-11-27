@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String getInfo() {
+    public String toString() {
         StringBuilder returnStr = new StringBuilder(this.user.toString());
         returnStr.append("\n\nПлатёжные счета клиента:");
         for (int i_1 = 0; i_1 < this.user.getPaymentAccounts().size(); i_1++) {

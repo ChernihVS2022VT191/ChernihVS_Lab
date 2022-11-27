@@ -173,7 +173,7 @@ public class BankServiceImpl implements BankService {
 
     /*Вывод полной информации о банке, его офисах, банкоматах, сотрудниках и клиентах*/
     @Override
-    public String getInfo() {
+    public String toString() {
         StringBuilder returnStr = new StringBuilder(this.bank.toString());
         returnStr.append("\n\nОфисы банка:");
         for (int i_1 = 0; i_1 < this.bank.getOffices().size(); i_1++) {

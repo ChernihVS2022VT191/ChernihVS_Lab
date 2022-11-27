@@ -15,9 +15,7 @@ public interface BankService {
     Boolean addEmployee(EmployeeService employee);
     Boolean delEmployee(EmployeeService employee);
     Boolean addUser(UserService user);
-    Boolean delUser(UserService user);
-
-    String getInfo();
+    Boolean delUser(UserService user);;
 
     void addMoney(Bank bank, Double sumMoney);
     Boolean subtractMoney(Bank bank, Double sumMoney);

@@ -18,8 +18,6 @@ public interface UserService {
     Boolean addPayAcc(PaymentAccountService payAcc);
     Boolean delPayAcc(PaymentAccountService payAcc);
 
-    String getInfo();
-
     void changeWork(String newWork, Double newMonthSalary);
     void changeMonthSalary(Double newMonthSalary);
 }

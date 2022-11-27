@@ -71,8 +71,8 @@ public class Main {
         }
 
         System.out.println("Банк");
-        System.out.println(banks.get(0).getInfo());
+        System.out.println(banks.get(0));
         System.out.println("\n\nКлиент");
-        System.out.println(users.get(0).getInfo());
+        System.out.println(users.get(0));
     }
 }

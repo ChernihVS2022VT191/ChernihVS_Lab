@@ -1,5 +1,6 @@
 package bank.entity;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import bank.entity.parentClasses.BankAccount;
 
@@ -31,7 +32,7 @@ public class CreditAccount extends BankAccount {
         return "Имя банка: " + super.getBank().getName() + "\nИмя пользователя: " + super.getUser().getFullName() +
                 "\nКоличество месяцев: " + countMonth + "\nДата взятия кредита: " + startDate.toString() +
                 "\nПредполагаемая дата погашения кредита:" + endDate.toString() + "\nСумма кредита: " +
-                amount + "\nПроцентная ставка: " + interestRate + "%" + "\nЕжемесячный платёж: " +
+                new DecimalFormat("#0.00").format(amount) + "\nПроцентная ставка: " + interestRate + "%" + "\nЕжемесячный платёж: " +
                 countMonth + "\nСотрудник, выдавший кредит: " + employee.getFullName() +
                 "\nId платёжного счёта: " + paymentAccount.getId().toString();
     }

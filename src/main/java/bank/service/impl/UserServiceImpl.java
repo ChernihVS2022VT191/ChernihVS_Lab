@@ -1,11 +1,10 @@
 package bank.service.impl;
 
-import bank.entity.Bank;
-import bank.entity.CreditAccount;
-import bank.entity.PaymentAccount;
-import bank.entity.User;
-import bank.entity.exceptions.CreditAccAnotherUserException;
-import bank.entity.exceptions.PayAccAnotherUserException;
+import bank.entity.*;
+import bank.entity.exceptions.*;
+import bank.entity.helpClass.StatusATM;
+import bank.entity.helpClass.StatusOffice;
+import bank.service.BankService;
 import bank.service.CreditAccountService;
 import bank.service.PaymentAccountService;
 import bank.service.UserService;
@@ -179,5 +178,48 @@ public class UserServiceImpl implements UserService {
             }
         }
         user.setCreditRating(creditRating);
+    }
+
+    @Override
+    public void applyLoan(BankService bank, BankOffice bankOffice, Employee employee, BankATM bankATM, Double sumCredit,
+                   LocalDate startDate, Integer countMonths, PaymentAccountService paymentAccount,
+                   CreditAccountService creditAccount) throws CreditException, BadUserRatingException,
+            PayAccAnotherUserException, UserAnotherBankException, CreditAccAnotherUserException{
+
+        if (this.user.getCreditRating()/10 < bank.getBank().getRating()) {
+            throw new BadUserRatingException(bank.getBank().getRating(),
+                    this.user.getCreditRating()/10);
+        }
+        if (bankOffice.getStatus() != StatusOffice.Work)
+            throw new CreditException("Выбранный офис не работает");
+        if (bankOffice.getMoney() < sumCredit)
+            throw new CreditException("В выбранном офисе недостаточно денег");
+        if (bankATM.getStatus() != StatusATM.Work)
+            throw new CreditException("Банкомат, в выбранном офисе, не работает");
+        if (bankATM.getMoney() < sumCredit)
+            throw new CreditException("В выбранном банкомате недостаточно денег");
+        if (!employee.getCanIssue())
+            throw new CreditException("Выбранный сотрудник не может выдавать кредиты");
+
+        if (!bank.getBank().getClients().contains(this.user)) {
+            paymentAccount.create(100, this.user, bank.getBank());
+            this.addPayAcc(paymentAccount);
+            bank.addUser(this);
+        }
+        else {
+            paymentAccount.update(this.getPayAccByBank(bank.getBank()));
+        }
+        creditAccount.create(100, this.user, bank.getBank(), employee, paymentAccount.getPayAcc(), startDate,
+                countMonths, sumCredit);
+        this.addCreditAcc(creditAccount);
+    }
+
+    private PaymentAccount getPayAccByBank(Bank bank) {
+        for (int i = 0; i < this.user.getPaymentAccounts().size(); i++) {
+            if (Objects.equals(this.user.getPaymentAccounts().get(i).getBank().getId(), bank.getId())) {
+                return this.user.getPaymentAccounts().get(i);
+            }
+        }
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 package bank.entity;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public class User extends Human {
     @Override
     public String toString() {
         return "ФИО: " + super.getFullName() + "\nДата рождения: " + super.getBirthDay() + "\nРабота: " +
-                work + "\nЗарплата: " + monthSalary + "\nКредитный рейтинг: " + creditRating;
+                work + "\nЗарплата: " + new DecimalFormat("#0.00").format(monthSalary) + "\nКредитный рейтинг: " + creditRating;
     }
 
     public String getWork() {

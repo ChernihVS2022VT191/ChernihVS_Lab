@@ -1,9 +1,7 @@
 package bank.service;
 
-import bank.entity.Bank;
-import bank.entity.User;
-import bank.entity.exceptions.CreditAccAnotherUserException;
-import bank.entity.exceptions.PayAccAnotherUserException;
+import bank.entity.*;
+import bank.entity.exceptions.*;
 
 import java.time.LocalDate;
 
@@ -22,4 +20,9 @@ public interface UserService {
 
     void changeWork(String newWork, Double newMonthSalary);
     void changeMonthSalary(Double newMonthSalary);
+
+    void applyLoan(BankService bank, BankOffice bankOffice, Employee employee, BankATM bankATM, Double sumCredit,
+                   LocalDate startDate, Integer countMonths, PaymentAccountService paymentAccount,
+                   CreditAccountService creditAccount) throws CreditException, BadUserRatingException,
+                   PayAccAnotherUserException, UserAnotherBankException, CreditAccAnotherUserException;
 }

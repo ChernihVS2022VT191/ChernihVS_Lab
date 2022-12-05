@@ -1,5 +1,6 @@
 package bank.entity;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import bank.entity.parentClasses.Human;
 
@@ -45,7 +46,7 @@ public class Employee extends Human {
             str += "\nМожет выдавать кредиты";
         else
             str += "\nНе может выдавать кредиты";
-        str += "\nИмя офиса: " + bankOffice.getName() + "\nЗарплата: " + salary;
+        str += "\nИмя офиса: " + bankOffice.getName() + "\nЗарплата: " + new DecimalFormat("#0.00").format(salary);
         return str;
     }
 

@@ -1,4 +1,4 @@
-package bank.entity.exceptions;
+package bank.exceptions;
 
 public class CreditAccAnotherUserException extends Exception {
     public CreditAccAnotherUserException() {

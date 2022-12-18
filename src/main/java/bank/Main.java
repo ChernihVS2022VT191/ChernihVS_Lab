@@ -1,17 +1,15 @@
 package bank;
 
-import bank.entity.BankOffice;
-import bank.entity.Employee;
-import bank.entity.exceptions.*;
-import bank.entity.helpClass.StatusATM;
-import bank.entity.helpClass.StatusOffice;
+import bank.enums.StatusATM;
+import bank.enums.StatusOffice;
+import bank.exceptions.*;
 import bank.service.BankService;
 import bank.service.UserService;
 import bank.service.impl.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Main {
     static ArrayList<BankService> sortBanksByCriteria(ArrayList<BankService> banks, Double loanSum) {
@@ -53,7 +51,7 @@ public class Main {
                 BankOfficeServiceImpl bankOfficeService = new BankOfficeServiceImpl();
                 bankOfficeService.create(i_2 + i_1, String.format("Офис_№%d", i_2), bankService.getBank(),
                         String.format("Адрес%d", i_2), StatusOffice.Work, 15000.0);
-                bankOfficeService.addMoney(bankService.getBank().getMoney()/3);
+                bankOfficeService.addMoney(bankService.getBank().getMoney() / 3);
                 for (int i_3 = 0; i_3 < 5; i_3++) {
                     EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
                     employeeService.create(i_3 + 5 * i_2 + 3 * i_1, String.format("Клим_%d", i_3 + 5 * i_2 + 3 * i_1), "Жуков",
@@ -91,70 +89,19 @@ public class Main {
             users.add(userService);
         }
 
-        System.out.println("Клиент");
-        UserService workUser = users.get(0);
-        System.out.println(workUser.getUser());
-        System.out.println("\nПопытка получения нового кредита");
-        Scanner input = new Scanner(System.in);
-        System.out.println("Введите сумму кредита: ");
-        double loanSum = input.nextDouble();
-        System.out.println("Введите количество месяцев: ");
-        int countMonth = input.nextInt();
-        ArrayList<BankService> banksWithMoney = sortBanksByCriteria(banks, loanSum);
-        System.out.println("\nПредложенные банки:");
-        for (int i = 0; i < banksWithMoney.size(); i++) {
-            if (i != 0) {
-                System.out.printf("\nБанк №%d%n", i+1);
-            }
-            else {
-                System.out.printf("Банк №%d%n", i+1);
-            }
-            System.out.println(banksWithMoney.get(i).getBank());
+        try {
+            users.get(0).saveToFile("file.txt", banks.get(0));
+            System.out.println("Платёжные счета до записи в файл:");
+            System.out.println(users.get(0).getUser().getPaymentAccounts());
+            System.out.println("\nКредитные счета до записи в файл:");
+            System.out.println(users.get(0).getUser().getCreditAccounts());
+            users.get(0).updateFromFile("file.txt");
+            System.out.println("\n\n\nПлатёжные счета после обновления из файла:");
+            System.out.println(users.get(0).getUser().getPaymentAccounts());
+            System.out.println("\nКредитные счета после обновления из файла:");
+            System.out.println(users.get(0).getUser().getCreditAccounts());
+        } catch (IOException e) {
+            System.out.println("Ошибка файла: " + e);
         }
-        System.out.println("\nВыберите из предложенных банков: ");
-        int bankID = input.nextInt();
-        BankService workBank = banksWithMoney.get(bankID - 1);
-
-        System.out.println("\nПредложенные банковские офисы:");
-        for (int i = 0; i < workBank.getBank().getOffices().size(); i++) {
-            if (i != 0) {
-                System.out.printf("\nОфис №%d%n", i+1);
-            }
-            else {
-                System.out.printf("Офис №%d%n", i+1);
-            }
-            System.out.println(workBank.getBank().getOffices().get(i));
-        }
-        System.out.println("\nВыберите из предложенных офисов: ");
-        int officeID = input.nextInt();
-        BankOffice workOffice = workBank.getBank().getOffices().get(officeID - 1);
-        System.out.println("\nПредложенные сотрудники:");
-        for (int i = 0; i < workOffice.getEmployees().size(); i++) {
-            if (i != 0) {
-                System.out.printf("\nСотрудник №%d%n", i+1);
-            }
-            else {
-                System.out.printf("Сотрудник №%d%n", i+1);
-            }
-            System.out.printf("id %d%n", workOffice.getEmployees().get(i).getId());
-            System.out.printf("Имя %s", workOffice.getEmployees().get(i).getName());
-            if (workOffice.getEmployees().get(i).getCanIssue()) {
-                System.out.println("\nМожет выдавать кредиты");
-            }
-            else {
-                System.out.println("\nНе может выдавать кредиты");
-            }
-        }
-        System.out.println("\nВыберите из предложенных сотрудников: ");
-        int employeeID = input.nextInt();
-        Employee workEmployee = workOffice.getEmployees().get(employeeID);
-        //Берём кредит
-        PaymentAccountServiceImpl payAcc = new PaymentAccountServiceImpl();
-        CreditAccountServiceImpl creditAcc = new CreditAccountServiceImpl();
-        workUser.applyLoan(workBank, workOffice, workEmployee, workOffice.getBankATMS().get(0), loanSum,
-                LocalDate.of(2022, 11, 11), countMonth, payAcc, creditAcc);
-        System.out.println("Кредит успешно оформлен.");
-        int size = workUser.getUser().getCreditAccounts().size();
-        System.out.println(workUser.getUser().getCreditAccounts().get(size - 1));
     }
 }

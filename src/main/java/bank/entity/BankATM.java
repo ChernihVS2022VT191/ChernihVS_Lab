@@ -1,6 +1,6 @@
 package bank.entity;
 
-import bank.entity.helpClass.StatusATM;
+import bank.enums.StatusATM;
 
 import java.text.DecimalFormat;
 

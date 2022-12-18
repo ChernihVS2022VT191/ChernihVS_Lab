@@ -1,4 +1,4 @@
-package bank.entity.helpClass;
+package bank.enums;
 
 public enum StatusOffice {
     Work,

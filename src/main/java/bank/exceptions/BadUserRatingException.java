@@ -1,4 +1,4 @@
-package bank.entity.exceptions;
+package bank.exceptions;
 
 public class BadUserRatingException extends Exception {
     public BadUserRatingException(Integer bankRating, Integer userRating) {

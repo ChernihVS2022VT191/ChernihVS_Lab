@@ -1,14 +1,20 @@
 package bank.service.impl;
 
 import bank.entity.*;
-import bank.entity.exceptions.*;
-import bank.entity.helpClass.StatusATM;
-import bank.entity.helpClass.StatusOffice;
+import bank.entity.jsonClasses.JsonCreditAcc;
+import bank.entity.jsonClasses.JsonPayAcc;
+import bank.enums.StatusATM;
+import bank.enums.StatusOffice;
+import bank.exceptions.*;
 import bank.service.BankService;
 import bank.service.CreditAccountService;
 import bank.service.PaymentAccountService;
 import bank.service.UserService;
+import com.google.gson.Gson;
 
+import java.io.*;
+import java.lang.reflect.Type;
+import com.google.gson.reflect.TypeToken;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -16,6 +22,9 @@ import java.util.Random;
 
 public class UserServiceImpl implements UserService {
     private User user = null;
+    Gson gson = new Gson();
+    Type payAccArrType = new TypeToken<ArrayList<JsonPayAcc>>() {}.getType();
+    Type credAccArrType = new TypeToken<ArrayList<JsonCreditAcc>>() {}.getType();
 
     /*Создание экземпляра пользователя*/
     @Override
@@ -143,6 +152,38 @@ public class UserServiceImpl implements UserService {
         return returnStr.toString();
     }
 
+    @Override
+    public void saveToFile(String fileName, BankService bank) throws IOException {
+        String payAccStr = gson.toJson(this.makeJsonPayAcc(bank.getBank().getId()));
+        String creditAccStr = gson.toJson(this.makeJsonCreditAcc(bank.getBank().getId()));
+        File file = new File(fileName);
+        FileWriter writer = new FileWriter(file);
+        writer.write("Платёжные счета:\n" + payAccStr + "\n\nКредитные счета:\n" + creditAccStr);
+        writer.close();
+    }
+
+    @Override
+    public void updateFromFile(String fileName) throws IOException {
+        File file = new File(fileName);
+        FileReader fr = new FileReader(file);
+        BufferedReader reader = new BufferedReader(fr);
+        String line = reader.readLine();
+        boolean first = true;
+        while (line != null) {
+            if (!line.isEmpty()) {
+                if (line.charAt(0) == '[') {
+                    if (first) {
+                        first = false;
+                        this.makePayAccFromJson(gson.fromJson(line, payAccArrType));
+                    } else {
+                        this.makeCreditAccFromJson(gson.fromJson(line, credAccArrType));
+                    }
+                }
+            }
+            line = reader.readLine();
+        }
+    }
+
     /*Смена работы пользователя, а так же и заработной платы, и пересчёт его кредитного рейтинга*/
     @Override
     public void changeWork(String newWork, Double newMonthSalary) {
@@ -221,5 +262,53 @@ public class UserServiceImpl implements UserService {
             }
         }
         return null;
+    }
+
+    private ArrayList<JsonPayAcc> makeJsonPayAcc(Integer bankID) {
+        ArrayList<JsonPayAcc> jsonPay = new ArrayList<>();
+        for (PaymentAccount paymentAccount : user.getPaymentAccounts()) {
+            if (Objects.equals(paymentAccount.getBank().getId(), bankID)) {
+                jsonPay.add(new JsonPayAcc(paymentAccount));
+            }
+        }
+        return jsonPay;
+    }
+
+    private void makePayAccFromJson(ArrayList<JsonPayAcc> jsonPayAcc) {
+        ArrayList<PaymentAccount> payAcc = this.user.getPaymentAccounts();
+        if (!jsonPayAcc.isEmpty()) {
+            for (int i = 0; i < payAcc.size(); i++) {
+                for (int j = 0; j < payAcc.size(); j++) {
+                    if (Objects.equals(payAcc.get(i).getId(), jsonPayAcc.get(j).getId())) {
+                        payAcc.get(i).updateFromJsonClass(jsonPayAcc.get(j));
+                    }
+                }
+            }
+            this.user.setPaymentAccounts(payAcc);
+        }
+    }
+
+    private ArrayList<JsonCreditAcc> makeJsonCreditAcc(Integer bankID) {
+        ArrayList<JsonCreditAcc> jsonCredit = new ArrayList<>();
+        for (CreditAccount creditAccount : user.getCreditAccounts()) {
+            if (Objects.equals(creditAccount.getBank().getId(), bankID)) {
+                jsonCredit.add(new JsonCreditAcc(creditAccount));
+            }
+        }
+        return jsonCredit;
+    }
+
+    private void makeCreditAccFromJson(ArrayList<JsonCreditAcc> jsonCreditAcc) {
+        ArrayList<CreditAccount> creditAccounts = this.user.getCreditAccounts();
+        if (!jsonCreditAcc.isEmpty()) {
+            for (int i = 0; i < creditAccounts.size(); i++) {
+                for (int j = 0; j < creditAccounts.size(); j++) {
+                    if (Objects.equals(creditAccounts.get(i).getId(), jsonCreditAcc.get(j).getId())) {
+                        creditAccounts.get(i).updateFromJsonClass(jsonCreditAcc.get(j));
+                    }
+                }
+            }
+            this.user.setCreditAccounts(creditAccounts);
+        }
     }
 }

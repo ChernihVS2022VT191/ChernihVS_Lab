@@ -1,10 +1,10 @@
 package bank.service;
 
 import bank.entity.Bank;
-import bank.entity.exceptions.AtmAnotherBankException;
-import bank.entity.exceptions.EmployeeAnotherBankException;
-import bank.entity.exceptions.OfficeAnotherBankException;
-import bank.entity.exceptions.UserAnotherBankException;
+import bank.exceptions.AtmAnotherBankException;
+import bank.exceptions.EmployeeAnotherBankException;
+import bank.exceptions.OfficeAnotherBankException;
+import bank.exceptions.UserAnotherBankException;
 
 public interface BankService {
     void create(Integer id, String name);

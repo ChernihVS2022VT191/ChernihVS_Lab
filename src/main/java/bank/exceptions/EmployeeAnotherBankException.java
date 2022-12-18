@@ -1,4 +1,4 @@
-package bank.entity.exceptions;
+package bank.exceptions;
 
 public class EmployeeAnotherBankException extends Exception {
     public EmployeeAnotherBankException() {

@@ -1,7 +1,10 @@
 package bank.service.impl;
 
 import bank.entity.*;
-import bank.entity.exceptions.*;
+import bank.exceptions.AtmAnotherBankException;
+import bank.exceptions.EmployeeAnotherBankException;
+import bank.exceptions.OfficeAnotherBankException;
+import bank.exceptions.UserAnotherBankException;
 import bank.service.*;
 
 import java.util.ArrayList;

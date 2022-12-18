@@ -1,6 +1,6 @@
 package bank.entity;
 
-import bank.entity.helpClass.StatusOffice;
+import bank.enums.StatusOffice;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

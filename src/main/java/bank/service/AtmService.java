@@ -4,7 +4,7 @@ import bank.entity.Bank;
 import bank.entity.BankATM;
 import bank.entity.BankOffice;
 import bank.entity.Employee;
-import bank.entity.helpClass.StatusATM;
+import bank.enums.StatusATM;
 
 public interface AtmService {
     void create(Integer id, String name, StatusATM status, Boolean workPayMoney, Boolean workDepositMoney,

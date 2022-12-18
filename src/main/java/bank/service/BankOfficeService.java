@@ -3,9 +3,9 @@ package bank.service;
 import bank.entity.Bank;
 import bank.entity.BankATM;
 import bank.entity.BankOffice;
-import bank.entity.exceptions.AtmAnotherOfficeException;
-import bank.entity.exceptions.EmployeeAnotherOfficeException;
-import bank.entity.helpClass.StatusOffice;
+import bank.exceptions.AtmAnotherOfficeException;
+import bank.exceptions.EmployeeAnotherOfficeException;
+import bank.enums.StatusOffice;
 
 public interface BankOfficeService {
     void create(Integer id, String name, Bank bank, String address, StatusOffice status, Double rentCost);

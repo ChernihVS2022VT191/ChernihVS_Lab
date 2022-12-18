@@ -4,7 +4,7 @@ import bank.entity.Bank;
 import bank.entity.BankATM;
 import bank.entity.BankOffice;
 import bank.entity.Employee;
-import bank.entity.helpClass.StatusATM;
+import bank.enums.StatusATM;
 import bank.service.AtmService;
 
 import java.util.Objects;

@@ -1,8 +1,9 @@
 package bank.service;
 
 import bank.entity.*;
-import bank.entity.exceptions.*;
+import bank.exceptions.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public interface UserService {
@@ -25,4 +26,6 @@ public interface UserService {
                    LocalDate startDate, Integer countMonths, PaymentAccountService paymentAccount,
                    CreditAccountService creditAccount) throws CreditException, BadUserRatingException,
                    PayAccAnotherUserException, UserAnotherBankException, CreditAccAnotherUserException;
+    void saveToFile(String fileName, BankService bank) throws IOException;
+    void updateFromFile(String fileName) throws IOException;
 }
